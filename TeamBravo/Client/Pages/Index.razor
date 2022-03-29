@@ -1,0 +1,38 @@
+﻿@page "/"
+@page "/{categoryurl}"
+@inject ICategoryService CategoryService
+@inject IProductService ProductService  
+
+
+@if (category != null)
+{
+    <h1>@category.Name Section </h1>
+    <ProductList />
+}
+            else
+            {
+                
+                <ProductList />
+
+            }
+
+@code{
+    [Parameter]
+    public string CategoryUrl { get; set; }
+
+    private Category category = null;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await ProductService.LoadProducts(CategoryUrl);
+
+        if (CategoryUrl != null)
+        {
+            category = CategoryService.Categories.FirstOrDefault(c => c.Url.ToLower().Equals(CategoryUrl.ToLower()));
+        }
+        else
+        {
+            category = null;
+        }
+    }
+}

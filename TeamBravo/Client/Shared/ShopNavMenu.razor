@@ -1,0 +1,72 @@
+﻿@inject ICategoryService CategoryService
+
+@*<div class="top-row pl-4 navbar navbar-dark navbar-toggler-wrapper">
+    <a class="navbar-brand" href="">TeamBravo</a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-nav">
+        <li style="margin:auto 4px;">
+            <h3 style="margin:auto;color:white;"><strong>WALLET</strong>SHOP</h3>
+            
+        </li> 
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </li>
+    <li class="dropdown-divider"></li>
+
+        @foreach (var category in CategoryService.Categories)
+        {
+            <li class="nav-item px-2">
+                <NavLink class="nav-link" href="@category.Url">
+                    <span class="oi oi-@category.Icon" aria-hidden="true"></span> @category.Name
+                </NavLink>
+            </li>
+        }
+
+    </ul>
+</div>*@
+    
+
+<header>
+    <div class="container flex">
+        <h1>SHOPNAME</h1>
+        <input type="checkbox" id="nav-toggle" class="nav-toggle">
+        <nav>
+            <ul class="nav-ul" id="nav-ul">
+                <li><a href="">Home</a></li>
+                <li><a href="">Bags</a></li>
+                <li><a href="">Wallets</a></li>
+                <li><a href="">Accessories</a></li>
+                <li><a href="">Brands</a></li>
+                <li><a href="">Sale</a></li>
+                <li><a href="" class="btn btn-sign-up">Login</a></li>
+                <li><a href="">Cart($0.00)</a></li>
+            </ul>
+        </nav>
+        <label for="nav-toggle" class="nav-toggle-label">
+            <span></span>
+        </label>
+    </div>
+</header>
+
+@code {
+    private bool collapseNavMenu = false;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CategoryService.LoadCategories();
+    }
+}
