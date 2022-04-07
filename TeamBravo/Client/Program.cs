@@ -1,3 +1,5 @@
+using Blazored.LocalStorage;
+using Blazored.Toast;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TeamBravo.Client.Services.CategoryService;
 using TeamBravo.Client.Services.ProductService;
+using TeamBravo.Client.Services.CartService;
+
 
 namespace TeamBravo.Client
 {
@@ -22,6 +26,9 @@ namespace TeamBravo.Client
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<ICartService, CartService>();
+            builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddBlazoredToast();
 
             await builder.Build().RunAsync();
         }

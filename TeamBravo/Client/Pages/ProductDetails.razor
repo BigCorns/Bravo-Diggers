@@ -1,5 +1,9 @@
 ﻿@page "/product/{id}"
 @inject IProductService ProductService
+@inject ILocalStorageService LocalStorage
+@inject IToastService ToastService 
+@inject ICartService CartService
+
 <div class="container">
         <div class="featured-brands">
             <img class="card-img" src="@product.ImgUrl" alt="=@product.Title" />
@@ -14,22 +18,34 @@
             <h4 class="price">
                 $@product.Price
             </h4>
-            <button class="btn btn-primary"><i class="oi oi-cart">&nbsp;&nbsp;&nbsp;Add to Cart</i></button>
+            <button class="btn btn-primary" @onclick="AddToCart"><i class="oi oi-cart">&nbsp;&nbsp;&nbsp;Add to Cart</i></button>
         </div>
     </div>
 
 
 @code { private Product product = null;
 
-            [Parameter]
-            public string Id { get; set; }
+    [Parameter]
+    public string Id { get; set; }
 
-            protected override void OnInitialized()
-            {
-                if (ProductService.Products == null || ProductService.Products.Count == 0)
-                {
-                    ProductService.LoadProducts();
-                }
+    protected override void OnInitialized()
+    {
+        if (ProductService.Products == null || ProductService.Products.Count == 0)
+        {
+            ProductService.LoadProducts();
+        }
 
-                product = ProductService.Products.FirstOrDefault(product => product.Id == Int32.Parse(Id));
-            } }
+        product = ProductService.Products.FirstOrDefault(product => product.Id == Int32.Parse(Id));
+    }
+
+    private Product GetProduct()
+    {
+        var prodId = ProductService.Products.FirstOrDefault(product => product.Id == Int32.Parse(Id));
+        return prodId;
+    }
+
+    private async Task AddToCart()
+    {
+        await CartService.AddToCart(GetProduct());
+    }
+}
