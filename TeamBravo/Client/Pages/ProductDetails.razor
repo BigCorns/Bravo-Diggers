@@ -1,10 +1,9 @@
 ﻿@page "/product/{id}"
 @inject IProductService ProductService
 @inject ILocalStorageService LocalStorage
-@inject IToastService ToastService 
+@inject IToastService ToastService
 @inject ICartService CartService
-
-<div class="container">
+@*<div class="container">
         <div class="featured-brands">
             <img class="card-img" src="@product.ImgUrl" alt="=@product.Title" />
         </div>
@@ -20,7 +19,25 @@
             </h4>
             <button class="btn btn-primary" @onclick="AddToCart"><i class="oi oi-cart">&nbsp;&nbsp;&nbsp;Add to Cart</i></button>
         </div>
+    </div>*@
+
+<section class="product-section">
+    <div class="container flex">
+        <div class="card">
+            <img class="card-img" src="@product.ImgUrl" alt="=@product.Title" />
+            <h2 class="card-name">@product.Title</h2>
+
+            <p>@product.Description</p>
+            @if (product.OriginalPrice > product.Price)
+            {
+                <h6 class="text-muted original-price">$@product.OriginalPrice</h6>}
+            <p class="card-price">
+                $@product.Price
+            </p>
+            <button class="btn btn-primary" @onclick="AddToCart"><i class="oi oi-cart">&nbsp;&nbsp;&nbsp;Add to Cart</i></button>
+        </div>
     </div>
+</section>
 
 
 @code { private Product product = null;
