@@ -2,6 +2,7 @@
 @inject ISyncLocalStorageService LocalStorage
 @inject ICartService CartService
 @implements IDisposable
+@inject AuthenticationStateProvider AuthStateProvider
 
 @*<div class="top-row pl-4 navbar navbar-dark navbar-toggler-wrapper">
         <a class="navbar-brand" href="">TeamBravo</a>
@@ -61,6 +62,21 @@
                         <span class="badge badge-pill badge-light">@GetProductCount()</span>
                     </a>
                 </li>
+
+                <li class="nav-item px-3">
+                    <AuthorizeView>
+                        <NotAuthorized>
+                            <NavLink class="nav-link" href="login">
+                                <span class="oi oi-account-login" aria-hidden="true"></span> Login
+                            </NavLink>
+                        </NotAuthorized>
+                        <Authorized>
+                            <a class="nav-link" @onclick="Logout" style="cursor: pointer">
+                                <span class="oi oi-account-logout" aria-hidden="true"></span> (@LocalStorage.GetItemAsString("username")). Logout
+                            </a>
+                        </Authorized>
+                    </AuthorizeView>
+                </li>
             </ul>
         </nav>
         <label for="nav-toggle" class="nav-toggle-label">
@@ -99,6 +115,12 @@
     {
         var cart = LocalStorage.GetItem<List<Product>>("cart");
         return cart != null ? cart.Count : 0;
+    }
+
+    private async void Logout()
+    {
+        LocalStorage.RemoveItem("username");
+        await AuthStateProvider.GetAuthenticationStateAsync();
     }
 
 }

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using TeamBravo.Client.Services.CategoryService;
 using TeamBravo.Client.Services.ProductService;
 using TeamBravo.Client.Services.CartService;
-
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace TeamBravo.Client
 {
@@ -29,6 +29,9 @@ namespace TeamBravo.Client
             builder.Services.AddScoped<ICartService, CartService>();
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddBlazoredToast();
+            builder.Services.AddOptions();
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthState>();
 
             await builder.Build().RunAsync();
         }
