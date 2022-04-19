@@ -10,6 +10,7 @@ using TeamBravo.Server.Controllers.Services.ProductService;
 using TeamBravo.Server.Controllers.Services.CategoryService;
 using TeamBravo.Server.Data;
 using Microsoft.EntityFrameworkCore;
+using TeamBravo.Server.Controllers.Services.PaymentService;
 
 namespace TeamBravo.Server
 {
@@ -34,6 +35,7 @@ namespace TeamBravo.Server
             services.AddRazorPages();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IPaymentService, PaymentService>();
 
         }
 
